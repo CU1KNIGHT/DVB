@@ -81,68 +81,7 @@ int main() {
             return 0;
         }
 
-/*
-        vector<string> Nummer_vector(4374);
-        vector<string> Name_mit_Ort_vector(4374);
-        vector<string> Name_ohne_Ort_vector(4374);
-        vector<string> Ort_vector(4374);
-        vector<string> Tarifzone_1_vector(4374);
-        vector<string> Tarifzone_2_vector(4374);
-        vector<string> Tarifzone_3_vector(4374);
-        vector<string> WGS84_X_vector(4374);
-        vector<string> WGS84_Y_vector(4374);
 
-        vector<string> Haltestelle(669);
-        vector<string> kuerzel(669);
-
-        ifstream dvb_stops_synonome("dvb_stops_sym.csv");
-        ifstream dvb_stops_infos("dvb_stops.csv");
-
-        if (!dvb_stops_infos.is_open()) std::cout << "ERROR: File Open" << '\n';
-
-
-
-        while (dvb_stops_infos.good()) {
-            for (int j = 0; Name_der_Haltstelle != Name_ohne_Ort_vector[j]; j++) {
-
-                getline(dvb_stops_infos, Nummer_vector[j], ';');
-                getline(dvb_stops_infos, Name_mit_Ort_vector[j], ';');
-                getline(dvb_stops_infos, Name_ohne_Ort_vector[j], ';');
-                getline(dvb_stops_infos, Ort_vector[j], ';');
-                getline(dvb_stops_infos, Tarifzone_1_vector[j], ';');
-                getline(dvb_stops_infos, Tarifzone_2_vector[j], ';');
-                getline(dvb_stops_infos, Tarifzone_3_vector[j], ';');
-                getline(dvb_stops_infos, WGS84_X_vector[j], ';');
-                getline(dvb_stops_infos, WGS84_Y_vector[j], '\n');
-                if (Name_der_Haltstelle == Name_ohne_Ort_vector[j]) {
-                    cout << "Name der Haltestelle (ohne Ort) : " << Name_ohne_Ort_vector[j] << '\n';
-
-
-                for ( int i = 0;Name_der_Haltstelle!= Haltestelle[i] || Name_der_Haltstelle != kuerzel[j];i++) {
-
-                    getline(dvb_stops_synonome, Haltestelle[i], ';');
-
-                    getline(dvb_stops_synonome, kuerzel[i], '\n');
-                    if (Name_der_Haltstelle == Haltestelle[i] || Name_der_Haltstelle == kuerzel[i]) {
-                        cout << "Kuerzel  :" << "   " << kuerzel[i] << endl;
-                        cout << "Tarifzone  : " << Tarifzone_1_vector[j] << Tarifzone_2_vector[j] << Tarifzone_3_vector[j] <<'\n';
-                        std::cout << "-------------------" << '\n';
-
-                        return 0;
-
-
-                    }
-
-                }
-
-            }
-
-
-            }
-            dvb_stops_infos.close();
-            return 0;
-        }
-        */
 
     }
     else if(inputModus=="Ticket" || inputModus=="ticket"){
