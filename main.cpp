@@ -12,11 +12,11 @@ using namespace std;
 int main() {
     string inputModus,Name_der_Haltstelle;
     cout << "wähle deinen Modus aus [ Auskunft/ Ticket]" << endl;
-    cin>> inputModus;
+    std::getline (std::cin,inputModus);
     if(inputModus== "Auskunft" ||  inputModus== "auskunft"){
        cout<< " modus ist:  Auskunft" <<endl;
         cout<< " Geben Sie die Haltstelle ein!" <<endl;
-       cin>> Name_der_Haltstelle;
+        std::getline (std::cin,Name_der_Haltstelle);
 
 
         vector<string> Nummer_vector(4374);
@@ -85,7 +85,83 @@ int main() {
 
     }
     else if(inputModus=="Ticket" || inputModus=="ticket"){
+        string Startpunkt,Zielpunkt, Ticket_input;
         cout<< " modus ist:  Ticket" <<endl;
+        cout<< " ------------------------------" <<endl;
+        cout<< " Was ist dein Startpunkt : " <<endl;
+        std::getline (std::cin,Startpunkt);
+
+        cout<< " Was ist dein Zielpunkt : " <<endl;
+        std::getline (std::cin,Zielpunkt);
+
+        cout<< " Welches Ticket möchtest du? [Einzel/Tag/Woche / Monat]  " <<endl;
+        std::getline (std::cin,Ticket_input);
+
+
+        vector<string> Nummer_vector(4374);
+        vector<string> Name_mit_Ort_vector(4374);
+        vector<string> Name_ohne_Ort_vector(4374);
+        vector<string> Ort_vector(4374);
+        vector<string> Tarifzone_1_vector(4374);
+        vector<string> Tarifzone_2_vector(4374);
+        vector<string> Tarifzone_3_vector(4374);
+        vector<string> WGS84_X_vector(4374);
+        vector<string> WGS84_Y_vector(4374);
+
+        vector<string> Haltestelle(669);
+        vector<string> kuerzel(669);
+
+        ifstream dvb_stops_synonome("dvb_stops_sym.csv");
+        ifstream dvb_stops_infos("dvb_stops.csv");
+
+        if (!dvb_stops_synonome.is_open()) std::cout << "ERROR: File Open" << '\n';
+
+
+
+        while (dvb_stops_synonome.good()) {
+            for ( int i = 0;Name_der_Haltstelle!= Haltestelle[i]|| Name_der_Haltstelle != kuerzel[i];i++) {
+
+                getline(dvb_stops_synonome, Haltestelle[i], ';');
+                getline(dvb_stops_synonome, kuerzel[i], '\n');
+
+                if (Name_der_Haltstelle == Haltestelle[i] || Name_der_Haltstelle == kuerzel[i]) {
+                    cout << "Name der Haltestelle (ohne Ort) : " << Haltestelle[i] << '\n';
+                    cout << "Kuerzel  :" << "   " << kuerzel[i] << endl;
+                    Haltestelle[i]= Haltestelle[i];
+                    kuerzel[i]=kuerzel[i];
+                    for (int j = 0; Name_ohne_Ort_vector[j] != Haltestelle[i] ; j++) {
+
+                        getline(dvb_stops_infos, Nummer_vector[j], ';');
+                        getline(dvb_stops_infos, Name_mit_Ort_vector[j], ';');
+                        getline(dvb_stops_infos, Name_ohne_Ort_vector[j], ';');
+                        getline(dvb_stops_infos, Ort_vector[j], ';');
+                        getline(dvb_stops_infos, Tarifzone_1_vector[j], ';');
+                        getline(dvb_stops_infos, Tarifzone_2_vector[j], ';');
+                        getline(dvb_stops_infos, Tarifzone_3_vector[j], ';');
+                        getline(dvb_stops_infos, WGS84_X_vector[j], ';');
+                        getline(dvb_stops_infos, WGS84_Y_vector[j], '\n');
+                        if (Haltestelle[i] == Name_ohne_Ort_vector[j] ) {
+
+                            cout << "Tarifzone  : " << Tarifzone_1_vector[j] << Tarifzone_2_vector[j] << Tarifzone_3_vector[j] <<'\n';
+                            std::cout << "-------------------" << '\n';
+
+                            return 0;
+
+
+                        }
+
+                    }
+
+                }
+
+
+            }
+            dvb_stops_synonome.close();
+            return 0;
+        }
+
+
+
 
     }
 //------------------------------------------------------------------------------------------------------
