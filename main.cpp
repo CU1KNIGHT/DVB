@@ -1,8 +1,81 @@
 #include <iostream>
 #include <fstream>
-
 #include <vector>
 #include <sstream>
+#include <cmath>
+/*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+/*::                                                                         :*/
+/*::  This routine calculates the distance between two points (given the     :*/
+/*::  latitude/longitude of those points). It is being used to calculate     :*/
+/*::  the distance between two locations using GeoDataSource(TM) products.   :*/
+/*::                                                                         :*/
+/*::  Definitions:                                                           :*/
+/*::    South latitudes are negative, east longitudes are positive           :*/
+/*::                                                                         :*/
+/*::  Passed to function:                                                    :*/
+/*::    lat1, lon1 = Latitude and Longitude of point 1 (in decimal degrees)  :*/
+/*::    lat2, lon2 = Latitude and Longitude of point 2 (in decimal degrees)  :*/
+/*::    unit = the unit you desire for results                               :*/
+/*::           where: 'M' is statute miles (default)                         :*/
+/*::                  'K' is kilometers                                      :*/
+/*::                  'N' is nautical miles                                  :*/
+/*::  Worldwide cities and other features databases with latitude longitude  :*/
+/*::  are available at https://www.geodatasource.com                         :*/
+/*::                                                                         :*/
+/*::  For enquiries, please contact sales@geodatasource.com                  :*/
+/*::                                                                         :*/
+/*::  Official Web site: https://www.geodatasource.com                       :*/
+/*::                                                                         :*/
+/*::           GeoDataSource.com (C) All Rights Reserved 2018                :*/
+/*::                                                                         :*/
+/*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+#define pi 3.14159265358979323846
+
+/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+/*::  Function prototypes                                           :*/
+/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+double deg2rad(double);
+
+double rad2deg(double);
+
+double distance(double lat1, double lon1, double lat2, double lon2, char unit) {
+    double theta, dist;
+    if ((lat1 == lat2) && (lon1 == lon2)) {
+        return 0;
+    } else {
+        theta = lon1 - lon2;
+        dist = sin(deg2rad(lat1)) * sin(deg2rad(lat2)) + cos(deg2rad(lat1)) * cos(deg2rad(lat2)) * cos(deg2rad(theta));
+        dist = acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        switch (unit) {
+            case 'M':
+                break;
+            case 'K':
+                dist = dist * 1.609344;
+                break;
+            case 'N':
+                dist = dist * 0.8684;
+                break;
+        }
+        return (dist);
+    }
+}
+
+/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+/*::  This function converts decimal degrees to radians             :*/
+/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+double deg2rad(double deg) {
+    return (deg * pi / 180);
+}
+
+/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+/*::  This function converts radians to decimal degrees             :*/
+/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+double rad2deg(double rad) {
+    return (rad * 180 / pi);
+}
 
 using namespace std;
 int main() {
@@ -13,7 +86,8 @@ int main() {
     int j = count_s_punkt;
     string inputModus,Name_der_Haltstelle;
     string I_found_startpunkt_in_dvb_stops_synonome;
-    string found_startpunkt, found_zielpunkt, Zielpunkt_Tarifzone, startpunkt_Tarifzone, startpunkt_WGS84_X, startpunkt_WGS84_Y, zielpunkt_WGS84_Y, zielpunkt_WGS84_X;
+    string found_startpunkt, found_zielpunkt, Zielpunkt_Tarifzone, startpunkt_Tarifzone;
+    double startpunkt_WGS84_X, startpunkt_WGS84_Y, zielpunkt_WGS84_Y, zielpunkt_WGS84_X;
     string input_Auswahl;
 
     cout << "wähle deinen Modus aus [ Auskunft/ Ticket]" << endl;
@@ -285,8 +359,9 @@ int main() {
                 Ort_vector[j] == "Dresden") { // found the same dvb stop  +++++++++ found the right one ==========
                 count_s_punkt = j;
                 startpunkt_Tarifzone = Tarifzone_1_vector[j] + Tarifzone_2_vector[j] + Tarifzone_3_vector[j];
-                startpunkt_WGS84_X = WGS84_X_vector[j];
-                startpunkt_WGS84_Y = WGS84_Y_vector[j];
+
+                startpunkt_WGS84_X = stod(WGS84_X_vector[j]);
+                startpunkt_WGS84_Y = stod(WGS84_Y_vector[j]);
 
 
                 cout
@@ -298,8 +373,8 @@ int main() {
 
                 cout << "startpunkt_Tarifzone " << startpunkt_Tarifzone << endl;
 
-                cout << "startpunkt_WGS84_X " << WGS84_X_vector[j] << endl;
-                cout << "startpunkt_WGS84_X " << WGS84_Y_vector[j] << endl;
+                cout << "startpunkt_WGS84_X " << startpunkt_WGS84_X << endl;
+                cout << "startpunkt_WGS84_X " << startpunkt_WGS84_Y << endl;
 
 
                 cout << " +++++++++++++++++++++  I found 'startpunkt' in  dvb_stops and the number is :   " << j
@@ -317,8 +392,9 @@ int main() {
                 Ort_vector[j] == "Dresden") { // found the same dvb stop  +++++++++ found the right one ==========
                 count_z_punkt = j;
                 Zielpunkt_Tarifzone = Tarifzone_1_vector[j] + Tarifzone_2_vector[j] + Tarifzone_3_vector[j];
-                zielpunkt_WGS84_X = WGS84_X_vector[j];
-                zielpunkt_WGS84_Y = WGS84_Y_vector[j];
+                zielpunkt_WGS84_X = stod(WGS84_X_vector[j]);
+
+                zielpunkt_WGS84_Y = stod(WGS84_Y_vector[j]);
 
 
                 cout
@@ -329,8 +405,8 @@ int main() {
                 cout << " +++++++++++++++++++++  I found 'startpunkt' in  kuerzel[count_s_punkt_sym]    "
                      << found_zielpunkt << "     ++++++++++++++++++++++++++++++++" << endl;
 
-                cout << "zielpunkt_WGS84_X " << WGS84_X_vector[j] << endl;
-                cout << "zielpunkt_WGS84_Y " << WGS84_Y_vector[j] << endl;
+                cout << "zielpunkt_WGS84_X " << zielpunkt_WGS84_X << endl;
+                cout << "zielpunkt_WGS84_Y " << zielpunkt_WGS84_Y << endl;
                 cout << "Zielpunkt_Tarifzone " << Zielpunkt_Tarifzone << endl;
 
 
@@ -672,6 +748,10 @@ int main() {
     cout << " +++++++++++++++++++++  I found 'startpunkt' in  dvb_stops and the number is :   "   << count_s_punkt << "     ++++++++++++++++++++++++++++++++" << endl;
     cout << " +++++++++++++++++++++  I found 'startpunkt' in  dvb_stops and the number is :   "    << found_startpunkt<< "     ++++++++++++++++++++++++++++++++" << endl;
 */
+    cout << "the distance is   "
+         << distance(zielpunkt_WGS84_X, zielpunkt_WGS84_Y, startpunkt_WGS84_X, startpunkt_WGS84_Y, 'K') << endl;
+
+
     cout << "google.de/maps/dir/" << found_startpunkt << "/" << found_zielpunkt << endl;
 
 
