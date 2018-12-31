@@ -86,7 +86,10 @@ class My_punct : public std::numpunct<char> {
 protected:
     char do_decimal_point() const { return ','; }//comma
 };
+
+
 int main() {
+    int zone;
     int count_s_punkt_sym;
     int count_s_punkt;
     int count_z_punkt;
@@ -96,7 +99,7 @@ int main() {
     string I_found_startpunkt_in_dvb_stops_synonome;
     string found_startpunkt, found_zielpunkt, Zielpunkt_Tarifzone, startpunkt_Tarifzone;
     double startpunkt_WGS84_X, startpunkt_WGS84_Y, zielpunkt_WGS84_Y, zielpunkt_WGS84_X;
-    string input_Auswahl;
+    string input_Auswahl, Ticket_output;
     string z_tz_1, z_tz_2, z_tz_3;
     string s_tz_1, s_tz_2, s_tz_3;
     cout << "     _       _\n"
@@ -209,7 +212,7 @@ int main() {
         cout << " Was ist dein Zielpunkt : " << endl;
         std::getline(std::cin, Zielpunkt);
         cout << endl;
-        cout << " Welches Ticket möchtest du? [Einzel/Tag/Woche / Monat]  " << endl;
+        cout << " Welches Ticket möchtest du? [ Einzel / Tag / Woche / Monat ]  " << endl;
         std::getline(std::cin, Ticket_input);
         cout << endl;
 
@@ -223,8 +226,8 @@ int main() {
         vector<string> WGS84_X_vector(4374);
         vector<string> WGS84_Y_vector(4374);
 
-        vector<string> Haltestelle(669);
-        vector<string> kuerzel(669);
+        vector<string> Haltestelle(670);
+        vector<string> kuerzel(670);
 
         vector<string> TicketID(10);
         vector<string> Bezeichnung(10);
@@ -241,13 +244,14 @@ int main() {
         DVB_T.is_open();
 
 
-        for (int z = 1; z <=
-                        668/*(Startpunkt != kuerzel[z] || kuerzel[count_s_punkt_sym].find(Startpunkt) == std::string::npos)*/; ++z) {//search in dvb_stops_sym    for the [ startpunkt]
+        for (int z = 1; z <
+                        670/*(Startpunkt != kuerzel[z] || kuerzel[count_s_punkt_sym].find(Startpunkt) == std::string::npos)*/; z++) {//search in dvb_stops_sym    for the [ startpunkt]
             count_s_punkt_sym = z;
 
 
             getline(dvb_stops_synonome, Haltestelle[count_s_punkt_sym], ';');
             getline(dvb_stops_synonome, kuerzel[count_s_punkt_sym], '\n');
+            //  cout<<"    Kuerzel " <<kuerzel[z]<<endl;
 
             /*
             cout<<"--------------------------------"<<endl;
@@ -333,13 +337,15 @@ int main() {
                 s_tz_1 = Tarifzone_1_vector[j];
                 s_tz_2 = Tarifzone_2_vector[j];
                 s_tz_3 = Tarifzone_3_vector[j];
+
+                /*
                 cout << "s_tz_1 " << s_tz_1 << endl;
                 cout << "s_tz_1 " << !(s_tz_1.empty()) << endl;
                 cout << "s_tz_2" << s_tz_2 << endl;
                 cout << "s_tz_2 " << !(s_tz_2.empty()) << endl;
                 cout << "s_tz_3" << s_tz_3 << endl;
                 cout << "s_tz_3 " << !(s_tz_3.empty()) << endl;
-
+*/
                 //startpunkt_WGS84_X = stod(WGS84_X_vector[j]);
                 //startpunkt_WGS84_Y = stod(WGS84_Y_vector[j]);
 
@@ -411,12 +417,14 @@ int main() {
                 double n;
                 mm >> n;
                 zielpunkt_WGS84_Y = n;
+                /*
                 cout << "z_tz_1 " << z_tz_1 << endl;
                 cout << "z_tz_1 " << !(z_tz_1.empty()) << endl;
                 cout << "z_tz_2" << z_tz_2 << endl;
                 cout << "z_tz_2 " << !(z_tz_2.empty()) << endl;
                 cout << "z_tz_3" << z_tz_3 << endl;
                 cout << "z_tz_3 " << !(z_tz_3.empty()) << endl;
+                 */
 /*
 /*
   *              cout
@@ -467,6 +475,9 @@ int main() {
                 getline(DVB_T, Bezeichnung[k], ';');
                 getline(DVB_T, Zonen[k], ';');
                 getline(DVB_T, Preis[k], '\n');
+                cout << "Zonen: " << Zonen[k] << '\n';
+                cout << "length: " << Zonen[k].length() << '\n';
+                cout << "empty(): " << Zonen[k].empty() << '\n';
                 /*
                          cout << "TicketID: "<<TicketID[k] << '\n';
                          cout << "Bezeichnung: "<< Bezeichnung[k] << '\n';
@@ -475,15 +486,53 @@ int main() {
 
                          cout << "-------------------" << '\n';
          */
-                if (!(s_tz_1.empty() && z_tz_1.empty()) or !(s_tz_2.empty() && z_tz_2.empty()) or
-                    !(s_tz_3.empty() && z_tz_3.empty())) {
-                    cout << " zone 1" << endl;
+                if ((Zonen[k].empty() == 0) && Bezeichnung[k].find(Ticket_input) != std::string::npos) {
+                    // cout << "   Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;
+                    cout << "first if true";
+
+
+                    if ((s_tz_1.empty() && z_tz_1.empty()) == 0 || (s_tz_2.empty() && z_tz_2.empty()) == 0 ||
+                        !(s_tz_3.empty() && z_tz_3.empty()) == 0) {
+                        if (Zonen[k].find('1') != std::string::npos) {
+                            //cout << " same zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;
+                            // cout << " zone 1" << endl;
+                            zone = 1;
+                            Ticket_output = Preis[k];
+                            cout << "first if true  1 zone";
+
+                        }
                 } else if (!(s_tz_1.empty() && z_tz_3.empty()) or !(s_tz_3.empty() && z_tz_1.empty())) {
-                    cout << " zone 3" << endl;
+                        zone = 3;
+
+                        if (Zonen[k].find('3') != std::string::npos) {
+                            //  cout << "  zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;
 
 
-                } else {
-                    cout << " zone 2" << endl;
+                            //  cout << " zone 3" << endl;
+                            Ticket_output = Preis[k];
+                            cout << "first if true  3 zone";
+
+
+                        }
+                    }
+
+
+                    if (!(s_tz_1.empty() && z_tz_2.empty()) or !(s_tz_2.empty() && z_tz_1.empty()) or
+                        !(s_tz_2.empty() && z_tz_3.empty()) || !(s_tz_3.empty() && z_tz_2.empty())) {
+                        zone = 2;
+                        if (Zonen[k].find('2') != std::string::npos) {
+                            // cout << "  zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;
+
+
+                            // cout << " zone 2" << endl;
+                            Ticket_output = Preis[k];
+                            cout << "first if true  2 zone";
+
+
+                        }
+
+
+
 
                 }
 
@@ -491,22 +540,48 @@ int main() {
 
 
 
-                /*
-                if (Bezeichnung[k].find(Ticket_input) != std::string::npos) {
-                    cout << "-------------------" << '\n';
-                    //cout << "Bezeichnung" << Bezeichnung[k] << "  preis" << Preis[k] << endl;
-                    if (Zielpunkt_Tarifzone == startpunkt_Tarifzone && Zonen[k].find('1') != std::string::npos) {
-                        cout << " same zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;
 
-                    } else if (Zielpunkt_Tarifzone != startpunkt_Tarifzone && Zonen[k].find('2') != std::string::npos) {
-                        cout << " 2 zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k]
-                             << endl;
-                    } else{ cout << "   Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;}
-                  //  cout << "-------------------" << '\n';
+
+
+                    /*
+                         cout << "-------------------" << '\n';
+                         cout << "Bezeichnung" << Bezeichnung[k] << "  preis" << Preis[k] << endl;
+                         if (zone ==1 && Zielpunkt_Tarifzone == startpunkt_Tarifzone && Zonen[k].find('1') != std::string::npos) {
+                             cout << " same zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;
+
+                         } else if ( zone ==zone[k] or Zielpunkt_Tarifzone != startpunkt_Tarifzone && Zonen[k].find('2') != std::string::npos) {
+                             cout << " 2 zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k]
+                                  << endl;
+                         } else{ cout << "   Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;}
+                       //  cout << "-------------------" << '\n';
+                       */
+                } else if ((Zonen[k].length() == 0) && Bezeichnung[k].find(Ticket_input) != std::string::npos) {
+                    cout << "secound if true";
+
+
+                    // cout << Ticket_output<<endl;
+
+                    if (!(s_tz_1.empty() && z_tz_1.empty()) or !(s_tz_2.empty() && z_tz_2.empty()) or
+                        !(s_tz_3.empty() && z_tz_3.empty())) {
+                        zone = 1;
+                        Ticket_output = Preis[k];
+
+                    } else if (!(s_tz_1.empty() && z_tz_2.empty()) or !(s_tz_2.empty() && z_tz_1.empty()) or
+                               !(s_tz_2.empty() && z_tz_3.empty()) || !(s_tz_3.empty() && z_tz_2.empty())) {
+                        zone = 2;
+                        Ticket_output = Preis[k];
+
+                    } else if (!(s_tz_1.empty() && z_tz_3.empty()) or !(s_tz_3.empty() && z_tz_1.empty())) {
+                        zone = 3;
+
+                        Ticket_output = Preis[k];
+                    }
+
                 }
+
                 // else if(){}
                 //else if(){}
-*/
+
             }
 
         }
@@ -523,22 +598,35 @@ int main() {
 
     }
     cout << endl;
+    // cout<< Ticket_output<<endl;
+    cout << "---------------------------------------------------------------++++++++++++++++++++++++++++++++++" << endl;
 
 
-    cout << " " << found_startpunkt << " ---> " << " " << found_zielpunkt << endl;
+    cout << "    " << found_startpunkt << "    -------->" << "    " << found_zielpunkt << endl;
+    cout << "---------------------------------------------------------------" << endl;
+
+
     cout << endl;
+    cout << "Tarif zone  " << zone << endl;
+    cout << Ticket_output << endl;
+    cout << "               Erwachsener" << endl;
+    cout << " " + Ticket_output;
+    cout << endl;
+    cout << "---------------------------------------------------------------" << endl;
 
-    cout << "Das entspricht einen Weg von   "
+    cout << "Das entspricht einen Weg von "
          << distance(startpunkt_WGS84_X, startpunkt_WGS84_Y, zielpunkt_WGS84_X, zielpunkt_WGS84_Y, 'K') << " km"
          << endl;
     cout << endl;
+    cout << "---------------------------------------------------------------" << endl;
 
     cout << "Auskunft :" << endl;
     cout << "google.de/maps/dir/" << found_startpunkt << "/" << found_zielpunkt << endl;
     cout << endl;
 
 
-    cout << " the end" << endl;
+    cout << "---------------------------------------------------------------++++++++++++++++++++++++++++++++++" << endl;
 
 
+    main();
 }
