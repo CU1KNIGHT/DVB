@@ -101,7 +101,7 @@ int main() {
     double startpunkt_WGS84_X, startpunkt_WGS84_Y, zielpunkt_WGS84_Y, zielpunkt_WGS84_X;
     string input_Auswahl, Ticket_output;
     string z_tz_1, z_tz_2, z_tz_3;
-    string s_tz_1, s_tz_2, s_tz_3;
+    string s_tz_1, s_tz_2, s_tz_3, Ticket_output_no_zone;
     cout << "     _       _\n"
             "    | |     | |\n"
             "  __| |_   _| |__\n"
@@ -150,24 +150,14 @@ int main() {
             getline(dvb_stops_synonome, Haltestelle[i], ';');
             getline(dvb_stops_synonome, kuerzel[i]);
 
-/*
-                cout<<"--------------------------------"<<endl;
-                cout<<"Name_der_Haltstelle   "<<Name_der_Haltstelle<<endl;
-                cout<<"Haltestelle   "<<Haltestelle[i]<<endl;
-                cout<<"    Kuerzel " <<kuerzel[i]<<endl;
 
-
-                cout<<"    kuerzel[i].data()" <<kuerzel[i].data()<<endl;
-
-                cout<< "count  " << i<<endl;
-                */
 
 
             if (Name_der_Haltstelle == Haltestelle[i] || kuerzel[i].find(Name_der_Haltstelle) != std::string::npos) {
                 cout << "-------------------" << endl;
                 cout << "Name der Haltestelle (ohne Ort) : " << Haltestelle[i] << '\n';
                 cout << "Kuerzel  :" << "   " << kuerzel[i] << endl;
-                // cout<< "count  " << i<<endl;
+
 
 
 
@@ -245,69 +235,42 @@ int main() {
 
 
         for (int z = 1; z <
-                        670/*(Startpunkt != kuerzel[z] || kuerzel[count_s_punkt_sym].find(Startpunkt) == std::string::npos)*/; z++) {//search in dvb_stops_sym    for the [ startpunkt]
+                        670; z++) {//search in dvb_stops_sym    for the [ startpunkt]
             count_s_punkt_sym = z;
 
 
             getline(dvb_stops_synonome, Haltestelle[count_s_punkt_sym], ';');
             getline(dvb_stops_synonome, kuerzel[count_s_punkt_sym], '\n');
-            //  cout<<"    Kuerzel " <<kuerzel[z]<<endl;
-
-            /*
-            cout<<"--------------------------------"<<endl;
-            cout<<"Name_der_Haltstelle   "<<Name_der_Haltstelle<<endl;
-            cout<<"Haltestelle   "<<Haltestelle[z]<<endl;
-            cout<<"    Kuerzel " <<kuerzel[z]<<endl;
-            cout<<"    count_s_punkt_sym " <<count_s_punkt_sym<<endl;
-
-
-            cout<<"    kuerzel[i].data()" <<kuerzel[z].data()<<endl;
-
-            cout<< "count  " << z<<endl;
-             */
 
 
 
 
-            //cout << " look for 'ZOO' in dvb_stops_synonome  the line now is:   " << count_s_punkt_sym<< "   Haltestelle[count_s_punkt_sym]" << Haltestelle[count_s_punkt_sym] <<  "   kuerzel[count_s_punkt_sym]   " << kuerzel[count_s_punkt_sym] <<endl;
+
+
 
             if (Zielpunkt == Haltestelle[z] || kuerzel[z].find(Zielpunkt) !=
-                                               std::string::npos) { // check if the input is same in data base ++dvb_stops_sym
-                // cout << " I found 'startpunkt' in  dvb_stops_synonome and the number is :   " << count_s_punkt_sym << endl;
-                //  I_found_startpunkt_in_dvb_stops_synonome = Haltestelle[count_s_punkt_sym];
-                //+ cout << "Haltestelle[z] " << Haltestelle[z] << endl;
-                //+ cout << "-------------------------------------------" << endl;
+                                               std::string::npos) {
+
 
                 found_zielpunkt = Haltestelle[z];
 
 
             } else if (Startpunkt == Haltestelle[z] || kuerzel[z].find(Startpunkt) !=
-                                                       std::string::npos) { // check if the input is same in data base ++dvb_stops_sym
-                // cout << " I found 'startpunkt' in  dvb_stops_synonome and the number is :   " << count_s_punkt_sym << endl;
-                //  I_found_startpunkt_in_dvb_stops_synonome = Haltestelle[z];
-                //+ cout << "Haltestelle[z] " << Haltestelle[z] << endl;
-                //+   cout << "-------------------------------------------" << endl;
+                                                       std::string::npos) {
+
                 found_startpunkt = Haltestelle[z];
 
-                //cout << "found_startpunkt " << found_startpunkt << endl;
-                // cout << "found_zielpunkt " << found_zielpunkt << endl;
 
 
 
 
             }
-            //cout << "z " << z << endl;
 
 
             }
 
 
-        //+ cout << "found_startpunkt  " << found_startpunkt << endl;
-        //+ cout << "found_zielpunkt  " << found_zielpunkt << endl;
-
-
-        for (j = 1; j <= 4373; ++j) { // search in the secound data base [ dvb_stops  ] a from a == b
-            //                       count_s_punkt = j;
+        for (j = 1; j <= 4373; ++j) {
             getline(dvb_stops_infos, Nummer_vector[j], ';');
             getline(dvb_stops_infos, Name_mit_Ort_vector[j], ';');
             getline(dvb_stops_infos, Name_ohne_Ort_vector[j], ';');
@@ -319,15 +282,7 @@ int main() {
             getline(dvb_stops_infos, WGS84_Y_vector[j], '\n');
 
 
-/*
 
-        cout << "-----------------------------------------------------------" <<  endl;
-        cout << "look for 'Zoo' in the   dvb_stops  and  the line now is :   " << count_s_punkt << endl;
-        cout << "Haltestelle[count_s_punkt_sym] :   " << Haltestelle[count_s_punkt_sym] << endl;
-        cout << "Name_ohne_Ort_vector[j] :   " << Name_ohne_Ort_vector[j] << endl;
-        cout << "-----------------------------------------------------------" <<  endl;
-
-*/
 
 
             if ((found_startpunkt == Name_ohne_Ort_vector[j]) &&
@@ -338,23 +293,14 @@ int main() {
                 s_tz_2 = Tarifzone_2_vector[j];
                 s_tz_3 = Tarifzone_3_vector[j];
 
-                /*
-                cout << "s_tz_1 " << s_tz_1 << endl;
-                cout << "s_tz_1 " << !(s_tz_1.empty()) << endl;
-                cout << "s_tz_2" << s_tz_2 << endl;
-                cout << "s_tz_2 " << !(s_tz_2.empty()) << endl;
-                cout << "s_tz_3" << s_tz_3 << endl;
-                cout << "s_tz_3 " << !(s_tz_3.empty()) << endl;
-*/
-                //startpunkt_WGS84_X = stod(WGS84_X_vector[j]);
-                //startpunkt_WGS84_Y = stod(WGS84_Y_vector[j]);
+
 
                 stringstream ee(WGS84_X_vector[j]);
                 locale loc(locale(), new My_punct);
                 ee.imbue(loc);
                 double v;
                 ee >> v;
-                //cout << v << endl;
+
                 startpunkt_WGS84_X = v;
 
                 stringstream qq(WGS84_Y_vector[j]);
@@ -363,33 +309,10 @@ int main() {
                 double h;
                 qq >> h;
                 startpunkt_WGS84_Y = h;
-                /*
 
 
-             *   cout
-             *           << "-------------------------++++++++++++++++++++++++++++++++++++++++----------------------------------"
-                        << endl;
-
-                cout << " +++++++++++++++++++++  I found 'startpunkt' in  kuerzel[count_s_punkt_sym]    "
-                     << found_startpunkt << "     ++++++++++++++++++++++++++++++++" << endl;
-
-                cout << "startpunkt_Tarifzone " << startpunkt_Tarifzone << endl;
-
-                cout << "startpunkt_WGS84_X " << startpunkt_WGS84_X << endl;
-                cout << "startpunkt_WGS84_y " << startpunkt_WGS84_Y << endl;
 
 
-                cout << " +++++++++++++++++++++  I found 'startpunkt' in  dvb_stops and the number is :   " << j
-                     << "     ++++++++++++++++++++++++++++++++" << endl;
-                cout << " +++++++++++++++++++++  I found 'startpunkt' in  dvb_stops and the number is :   "
-                     << count_s_punkt << "     ++++++++++++++++++++++++++++++++" << endl;
-                cout << " +++++++++++++++++++++  I found Name_ohne_Ort_vector[count_s_punkt] :   "
-                     << Name_ohne_Ort_vector[j] << "     ++++++++++++++++++++++++++++++++" << endl;
-                cout
-                        << "-------------------------+++++++++++++++++++++++++++++++++++++++++----------------------------------"
-                        << endl;
-
-                        */
 
             }
             if ((found_zielpunkt == Name_ohne_Ort_vector[j]) &&
@@ -402,13 +325,12 @@ int main() {
                 z_tz_3 = Tarifzone_3_vector[j];
 
 
-                //zielpunkt_WGS84_Y = stod(WGS84_Y_vector[j]);
+
                 stringstream ss(WGS84_X_vector[j]);
                 locale loc(locale(), new My_punct);
                 ss.imbue(loc);
                 double d;
                 ss >> d;
-                // cout << d << endl;
                 zielpunkt_WGS84_X = d;
 
                 stringstream mm(WGS84_Y_vector[j]);
@@ -417,57 +339,33 @@ int main() {
                 double n;
                 mm >> n;
                 zielpunkt_WGS84_Y = n;
-                /*
-                cout << "z_tz_1 " << z_tz_1 << endl;
-                cout << "z_tz_1 " << !(z_tz_1.empty()) << endl;
-                cout << "z_tz_2" << z_tz_2 << endl;
-                cout << "z_tz_2 " << !(z_tz_2.empty()) << endl;
-                cout << "z_tz_3" << z_tz_3 << endl;
-                cout << "z_tz_3 " << !(z_tz_3.empty()) << endl;
-                 */
-/*
-/*
-  *              cout
-                        << "-------------------------++++++++++++++++++++++++++++++++++++++++----------------------------------" << endl;
 
-
-                cout << " +++++++++++++++++++++  I found 'zielpunkt' in  kuerzel[count_s_punkt_sym]    "
-                     << found_zielpunkt << "     ++++++++++++++++++++++++++++++++" << endl;
-
-                cout << "zielpunkt_WGS84_X " << zielpunkt_WGS84_X << endl;
-                cout << "zielpunkt_WGS84_Y " << zielpunkt_WGS84_Y << endl;
-                cout << "Zielpunkt_Tarifzone " << Zielpunkt_Tarifzone << endl;
-
-
-                cout << " +++++++++++++++++++++  I found 'Zielpunkt' in  dvb_stops and the number is :   " << j
-                     << "     ++++++++++++++++++++++++++++++++" << endl;
-                cout << " +++++++++++++++++++++  I found 'Zielpunkt' in  dvb_stops and the number is :   "
-                     << count_z_punkt << "     ++++++++++++++++++++++++++++++++" << endl;
-                cout << " +++++++++++++++++++++  I found Name_ohne_Ort_vector[count_z_punkt] :   "
-                     << Name_ohne_Ort_vector[j] << "     ++++++++++++++++++++++++++++++++" << endl;
-                cout
-                        << "-------------------------+++++++++++++++++++++++++++++++++++++++++----------------------------------"
-                        << endl;
-
-                        */
 
             }
 
 
         }
-        /*
-        cout << " +++++++++++++++++++++  I found 'startpunkt' in  dvb_stops and the number is :   "   << count_z_punkt << "     ++++++++++++++++++++++++++++++++" << endl;
 
-        cout << " +++++++++++++++++++++  I found 'startpunkt' in  dvb_stops and the number is :   "   << count_s_punkt << "     ++++++++++++++++++++++++++++++++" << endl;
-*/
-        //cout<< "I_found_startpunkt_in_dvb_stops_synonome   "<< I_found_startpunkt_in_dvb_stops_synonome<<endl;
 
+        if (!(s_tz_1.empty() && z_tz_1.empty()) or !(s_tz_2.empty() && z_tz_2.empty()) or
+            !(s_tz_3.empty() && z_tz_3.empty())) {
+            zone = 1;
+
+
+        } else if (!(s_tz_1.empty() && z_tz_2.empty()) or !(s_tz_2.empty() && z_tz_1.empty()) or
+                   !(s_tz_2.empty() && z_tz_3.empty()) || !(s_tz_3.empty() && z_tz_2.empty())) {
+            zone = 2;
+
+
+        } else if (!(s_tz_1.empty() && z_tz_3.empty()) or !(s_tz_3.empty() && z_tz_1.empty())) {
+            zone = 3;
+
+        }
 
         if (!DVB_T.is_open()) std::cout << "ERROR: File Open" << '\n';
 
 
         while (DVB_T.good()) {
-
 
             for (int k = 0; k < 10; k++) {
 
@@ -475,114 +373,82 @@ int main() {
                 getline(DVB_T, Bezeichnung[k], ';');
                 getline(DVB_T, Zonen[k], ';');
                 getline(DVB_T, Preis[k], '\n');
-                cout << "Zonen: " << Zonen[k] << '\n';
-                cout << "length: " << Zonen[k].length() << '\n';
-                cout << "empty(): " << Zonen[k].empty() << '\n';
-                /*
-                         cout << "TicketID: "<<TicketID[k] << '\n';
-                         cout << "Bezeichnung: "<< Bezeichnung[k] << '\n';
-                         cout << "Zonen: "<< Zonen[k] << '\n';
-                         cout << "Preis: "<< Preis[k] << '\n';
-
-                         cout << "-------------------" << '\n';
-         */
-                if ((Zonen[k].empty() == 0) && Bezeichnung[k].find(Ticket_input) != std::string::npos) {
-                    // cout << "   Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;
-                    cout << "first if true";
 
 
-                    if ((s_tz_1.empty() && z_tz_1.empty()) == 0 || (s_tz_2.empty() && z_tz_2.empty()) == 0 ||
-                        !(s_tz_3.empty() && z_tz_3.empty()) == 0) {
-                        if (Zonen[k].find('1') != std::string::npos) {
-                            //cout << " same zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;
-                            // cout << " zone 1" << endl;
-                            zone = 1;
-                            Ticket_output = Preis[k];
-                            cout << "first if true  1 zone";
+                if (Ticket_input == "Tag" && Bezeichnung[k].find(Ticket_input) != std::string::npos) {
+                    if (((!s_tz_1.empty() && !z_tz_1.empty()) || (s_tz_2.empty() && z_tz_2.empty()) == 0 ||
+                         !(s_tz_3.empty() && z_tz_3.empty()) == 0)) {
+
+                        if (zone == 1) {
+
+
+                            Ticket_output = Preis[5];
+
+
 
                         }
-                } else if (!(s_tz_1.empty() && z_tz_3.empty()) or !(s_tz_3.empty() && z_tz_1.empty())) {
-                        zone = 3;
-
-                        if (Zonen[k].find('3') != std::string::npos) {
-                            //  cout << "  zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;
+                        if (zone == 2) {
 
 
-                            //  cout << " zone 3" << endl;
-                            Ticket_output = Preis[k];
-                            cout << "first if true  3 zone";
+                            Ticket_output = Preis[6];
+
+
+
+
 
 
                         }
                     }
+                }
+                if (Ticket_input == "Woche" && Bezeichnung[k].find(Ticket_input) != std::string::npos) {
+                    if (TicketID[k].find("Woche") != std::string::npos) {
 
 
-                    if (!(s_tz_1.empty() && z_tz_2.empty()) or !(s_tz_2.empty() && z_tz_1.empty()) or
-                        !(s_tz_2.empty() && z_tz_3.empty()) || !(s_tz_3.empty() && z_tz_2.empty())) {
-                        zone = 2;
-                        if (Zonen[k].find('2') != std::string::npos) {
-                            // cout << "  zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;
+                        Ticket_output = Preis[k];
 
 
-                            // cout << " zone 2" << endl;
-                            Ticket_output = Preis[k];
-                            cout << "first if true  2 zone";
+                    }
+                }
+                if (Ticket_input == "Monat") {
+                    if (TicketID[k].find("Monat") != std::string::npos) {
 
 
+                        Ticket_output = Preis[k];
+
+
+                    }
+                }
+                if (Ticket_input == "Einzel" && Bezeichnung[k].find(Ticket_input) !=
+                                                std::string::npos) {//+++++++++++++++++++++++++++++++++++++++++++Einzel
+
+
+
+                    if (!(Zonen[k].empty())) {
+
+
+                        if (zone == 1) {
+
+                            Ticket_output = Preis[1];
                         }
 
 
+                        if (zone == 2) {
 
 
-                }
+                            Ticket_output = Preis[2];
+
+                        } else if (zone == 3) {
 
 
+                            Ticket_output = Preis[3];
+                        }
 
-
-
-
-
-
-                    /*
-                         cout << "-------------------" << '\n';
-                         cout << "Bezeichnung" << Bezeichnung[k] << "  preis" << Preis[k] << endl;
-                         if (zone ==1 && Zielpunkt_Tarifzone == startpunkt_Tarifzone && Zonen[k].find('1') != std::string::npos) {
-                             cout << " same zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;
-
-                         } else if ( zone ==zone[k] or Zielpunkt_Tarifzone != startpunkt_Tarifzone && Zonen[k].find('2') != std::string::npos) {
-                             cout << " 2 zone  Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k]
-                                  << endl;
-                         } else{ cout << "   Bezeichnung " << Bezeichnung[k] << "  preis " << Preis[k] << endl;}
-                       //  cout << "-------------------" << '\n';
-                       */
-                } else if ((Zonen[k].length() == 0) && Bezeichnung[k].find(Ticket_input) != std::string::npos) {
-                    cout << "secound if true";
-
-
-                    // cout << Ticket_output<<endl;
-
-                    if (!(s_tz_1.empty() && z_tz_1.empty()) or !(s_tz_2.empty() && z_tz_2.empty()) or
-                        !(s_tz_3.empty() && z_tz_3.empty())) {
-                        zone = 1;
-                        Ticket_output = Preis[k];
-
-                    } else if (!(s_tz_1.empty() && z_tz_2.empty()) or !(s_tz_2.empty() && z_tz_1.empty()) or
-                               !(s_tz_2.empty() && z_tz_3.empty()) || !(s_tz_3.empty() && z_tz_2.empty())) {
-                        zone = 2;
-                        Ticket_output = Preis[k];
-
-                    } else if (!(s_tz_1.empty() && z_tz_3.empty()) or !(s_tz_3.empty() && z_tz_1.empty())) {
-                        zone = 3;
-
-                        Ticket_output = Preis[k];
                     }
 
+
                 }
-
-                // else if(){}
-                //else if(){}
-
             }
+
 
         }
         dvb_stops_infos.close();
@@ -590,15 +456,9 @@ int main() {
         DVB_T.close();
 
 
-
-
-
-
-
-
     }
     cout << endl;
-    // cout<< Ticket_output<<endl;
+
     cout << "---------------------------------------------------------------++++++++++++++++++++++++++++++++++" << endl;
 
 
@@ -608,9 +468,9 @@ int main() {
 
     cout << endl;
     cout << "Tarif zone  " << zone << endl;
+    cout << endl;
     cout << Ticket_output << endl;
-    cout << "               Erwachsener" << endl;
-    cout << " " + Ticket_output;
+    cout << "(Erwachsener)";
     cout << endl;
     cout << "---------------------------------------------------------------" << endl;
 
